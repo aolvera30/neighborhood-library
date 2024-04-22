@@ -21,17 +21,17 @@ public class Main
                         new Book(7, "9780446310789", "To Kill a Mockingbird"),
                         new Book(8, "9780765326355", "A Game of Thrones"),
                         new Book(9, "9780671723657", "One Hundred Years of Solitude"),
-                        new Book(10,"9780141182551", "One Flew Over the Cuckoo's Nest"),
-                        new Book(11,"9780062315007", "The Fault in Our Stars"),
-                        new Book(12,"9781400079986", "The Kite Runner"),
-                        new Book(13,"9780743273565", "The Da Vinci Code"),
-                        new Book(14,"9780374533557", "Sapiens: A Brief History of Humankind"),
-                        new Book(15,"9780060958027", "The Road"),
-                        new Book(16,"9780679720201", "In Cold Blood"),
-                        new Book(17,"9780679764025", "Into the Wild"),
-                        new Book(18,"9780307594006", "The Help"),
-                        new Book(19,"9780060850521", "Life of Pi"),
-                        new Book(20,"9781594480003", "The Namesake")
+                        new Book(10, "9780141182551", "One Flew Over the Cuckoo's Nest"),
+                        new Book(11, "9780062315007", "The Fault in Our Stars"),
+                        new Book(12, "9781400079986", "The Kite Runner"),
+                        new Book(13, "9780743273565", "The Da Vinci Code"),
+                        new Book(14, "9780374533557", "Sapiens: A Brief History of Humankind"),
+                        new Book(15, "9780060958027", "The Road"),
+                        new Book(16, "9780679720201", "In Cold Blood"),
+                        new Book(17, "9780679764025", "Into the Wild"),
+                        new Book(18, "9780307594006", "The Help"),
+                        new Book(19, "9780060850521", "Life of Pi"),
+                        new Book(20, "9781594480003", "The Namesake")
                 };
 
         int choice = 0;
@@ -42,63 +42,60 @@ public class Main
             System.out.println("3.Exit");
             System.out.println("Enter your command: ");
             choice = Integer.parseInt(userInput.nextLine());
+
+
+            switch (choice) {
+                case 1:
+                    displayAvailableBooks(library);
+                    System.out.println("1 Checkout Book");
+                    System.out.println("2 Return to Menu");
+                    int subChoice = Integer.parseInt(userInput.nextLine());
+                    switch (subChoice) {
+
+                        case 1:
+                            checkOutBook(library);
+                            break;
+                        case 2:
+                            break;
+                    }
+                    break;
+
+                case 2:
+                    displayCheckedOutBooks(library);
+                    System.out.println("(C) Check in Book");
+                    System.out.println("(X) Return to menu");
+                    String subInput = userInput.nextLine().strip().toUpperCase();
+                    switch (subInput) {
+                        case "C":
+                            checkInBook(library);
+                            break;
+                        case "X":
+                            break;
+                        default:
+                            System.out.println("Invalid Choice");
+                            break;
+                    }
+                    break;
+
+
+                case 3:
+                    System.out.println("Take care of all books!");
+                    break;
+
+                default:
+                    System.out.println("Invalid Selection");
+            }
         }
-
-        switch (choice)
-        {
-            case 1:
-                displayAvailableBooks(library);
-                System.out.println("1 Checkout Book");
-                System.out.println("2 Return to Menu");
-                int subChoice = Integer.parseInt(userInput.nextLine());
-                switch (subChoice) {
-
-                    case 1:
-                        checkOutBook(library);
-                        break;
-                    case 2:
-                        break;
-                }
-                break;
-
-            case 2:
-                displayCheckedOutBooks(library);
-                System.out.println("(C) Check in Book");
-                System.out.println("(X) Return to menu");
-                String subInput = userInput.nextLine().strip().toUpperCase();
-                switch (subInput) {
-                    case "C":
-                        checkInBook(library);
-                        break;
-                    case "X":
-                        break;
-                    default:
-                        System.out.println("Invalid Choice");
-                        break;
-                }
-                break;
-
-
-            case 3:
-                System.out.println("Take care of all books!");
-                break;
-
-            default:
-                System.out.println("Invalid Selection");
-        }
-
 
     }
 
 
-
-    private static void displayAvailableBooks(Book[] book)
+    private static void displayAvailableBooks(Book[] books)
     {
         System.out.println("Available Books: ");
-        for(Book book : book)
+        for (Book book : books)
 
-            if (!book.isCheckedOut())
-            {
+            if (!book.getIsCheckedOut()) {
                 System.out.println(book.getId() + ". " + book.getTitle() + " - ISBN: " + book.getIsbn() + " (Checked out to: " + book.getCheckedOutTo() + ")");
             }
 
@@ -106,50 +103,51 @@ public class Main
     }
 
 
-    private static void displayCheckedOutBooks(Book[] book)
+    private static void displayCheckedOutBooks(Book[] books)
     {
         System.out.println("Checked Out Books:");
-        for (Book book : book) {
-            if (book.isCheckedOut()) {
+        for (Book book : books) {
+            if (book.getIsCheckedOut()) {
                 System.out.println(book.getId() + ". " + book.getTitle() + " - ISBN: " + book.getIsbn() + " (Checked out to: " + book.getCheckedOutTo() + ")");
             }
         }
     }
-    }
 
-    private static void checkOutBook(Book[] book)
+
+    private static void checkOutBook(Book[] books)
     {
         System.out.println("Enter the ID of the book you want to check out:");
         int bookId = Integer.parseInt(Main.userInput.nextLine());
-        if (bookId < 1 || bookId > book.length) {
+        if (bookId < 1 || bookId > books.length) {
             System.out.println("Invalid book ID.");
             return;
         }
-        Book selectedBook = book[bookId - 1];
-        if (selectedBook.isCheckedOut()) {
+        Book selectedBook = books[bookId - 1];
+        if (selectedBook.getIsCheckedOut()) {
             System.out.println("Sorry, the book is already checked out.");
         } else {
             System.out.println("Enter your name:");
             String name = Main.userInput.nextLine();
             selectedBook.checkOut(name);
         }
-    private static void checkInBook(Book[] book)
-    {
-        private static void checkInBook(Book[] book) {
-        System.out.println("Enter the ID of the book you want to check in:");
-        int bookId = Integer.parseInt(Main.userInput.nextLine());
-        if (bookId < 1 || bookId > book.length) {
-            System.out.println("Invalid book ID.");
-            return;
-        }
-        Book selectedBook = book[bookId - 1];
-        if (!selectedBook.isCheckedOut()) {
-            System.out.println("The book is not checked out.");
-        } else {
-            selectedBook.checkIn();
-        }
     }
+        private static void checkInBook (Book[]books)
+        {
+            System.out.println("Enter the ID of the book you want to check in:");
+            int bookId = Integer.parseInt(Main.userInput.nextLine());
+            if (bookId < 1 || bookId > books.length) {
+                System.out.println("Invalid book ID.");
+                return;
+            }
+            Book selectedBook = books[bookId - 1];
+            if (!selectedBook.getIsCheckedOut()) {
+                System.out.println("The book is not checked out.");
+            } else {
+                selectedBook.checkIn();
+            }
 
 
+
+        }
 
 }
